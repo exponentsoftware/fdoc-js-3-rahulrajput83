@@ -18,7 +18,7 @@ const students = [
 
 const convertArrayToObject = students => {
     const arr = []
-    for(let i = 0; i < students.length; i++) {
+    for (let i = 0; i < students.length; i++) {
         let obj = {
             name: students[i][0],
             skills: students[i][1],
@@ -42,17 +42,17 @@ const student = {
             { skill: 'React', level: 9 }
         ],
         backEnd: [
-            { skill: 'Node',level: 7 },
+            { skill: 'Node', level: 7 },
             { skill: 'GraphQL', level: 8 },
         ],
-        dataBase:[
+        dataBase: [
             { skill: 'MongoDB', level: 7.5 },
         ],
-        dataScience:['Python', 'R', 'D3.js']
+        dataScience: ['Python', 'R', 'D3.js']
     }
 }
 
-const newStudent = {...student}
+const newStudent = { ...student }
 
 /* Use the student object to solve the following questions:
    a. Find the length of student object keys
@@ -66,3 +66,160 @@ console.log(Object.values(newStudent).length);
 console.log(Object.keys(newStudent.skills).length);
 console.log(newStudent.hasOwnProperty('graphicDesign'))
 Object.keys(newStudent).forEach((e) => console.log(e))
+
+const users = [
+    {
+        _id: 'ab12ex',
+        username: 'Alex',
+        email: 'alex@alex.com',
+        password: '123123',
+        createdAt: '17/05/2019 9:00 AM',
+        isLoggedIn: false
+    },
+    {
+        _id: 'fg12cy',
+        username: 'Asab',
+        email: 'asab@asab.com',
+        password: '123456',
+        createdAt: '17/05/2019 9:30 AM',
+        isLoggedIn: true
+    },
+    {
+        _id: 'zwf8md',
+        username: 'Brook',
+        email: 'brook@brook.com',
+        password: '123111',
+        createdAt: '17/05/2019 9:45 AM',
+        isLoggedIn: true
+    },
+    {
+        _id: 'eefamr',
+        username: 'Martha',
+        email: 'martha@martha.com',
+        password: '123222',
+        createdAt: '17/05/2019 9:50 AM',
+        isLoggedIn: false
+    },
+    {
+        _id: 'ghderc',
+        username: 'Thomas',
+        email: 'thomas@thomas.com',
+        password: '123333',
+        createdAt: '17/05/2019 10:00 AM',
+        isLoggedIn: false
+    }
+];
+
+const products = [
+    {
+        _id: 'eedfcf',
+        name: 'mobile phone',
+        description: 'Huawei Honor',
+        price: 200,
+        ratings: [
+            { userId: 'fg12cy', rate: 5 },
+            { userId: 'zwf8md', rate: 4.5 }
+        ],
+        likes: []
+    },
+    {
+        _id: 'aegfal',
+        name: 'Laptop',
+        description: 'MacPro: System Darwin',
+        price: 2500,
+        ratings: [],
+        likes: ['fg12cy']
+    },
+    {
+        _id: 'hedfcg',
+        name: 'TV',
+        description: 'Smart TV:Procaster',
+        price: 400,
+        ratings: [{ userId: 'fg12cy', rate: 5 }],
+        likes: ['fg12cy']
+    }
+];
+
+/* a. Imagine you are getting the above users collection from a MongoDB database. 
+
+        a. Create a function called ***signUp*** which allows user to add to the collection. If user exists, inform the user that he has already an account.
+        b. Create a function called ***signIn*** which allows user to sign in to the application */
+
+const signUp = (users, name) => {
+    const user = users.find((e) => e.email === name);
+    if (user) {
+        return 'Account already exits'
+    }
+}
+
+
+console.log(signUp(users, 'alex@alex.com'))
+
+const signIn = (users, name, password) => {
+    const user = users.find((e) => e.email === name);
+    if (user) {
+        if (user.password === password) {
+            return 'Logged In'
+        }
+        else {
+            return 'Incorrect Password'
+        }
+    }
+    else {
+        return 'User not exits'
+    }
+}
+
+console.log(signIn(users, 'alex@alex.com', '123123'))
+
+
+/* b. The products array has  three elements and each of them has six properties. 
+
+        a. Create a function called ***rateProduct*** which rates the product
+        b. Create a function called ***averageRating*** which calculate the average rating of a product
+
+    c. Create a function called ***likeProduct***. This function will helps to like to the product if it is not liked and remove like if it was liked. */
+
+
+const rateProduct = (products, id, user) => {
+    for(let i = 0; i < products.length; i++) {
+        if(products[i]._id === id) {
+            products[i].ratings.push(user);
+            return products
+        }
+        else {
+            'Product not found'
+        }
+    }
+}
+
+console.log(rateProduct(products, 'eedfcf', { userId: 'fg12fgs', rate: 5 }))
+
+const averageRating = (products, id) => {
+    const data = products.find((e) => e._id === id);
+    if(data) {
+        let sum = 0
+        for(let i = 0; i < data.ratings.length; i++) {
+            sum += data.ratings[i].rate
+        }
+        return sum / data.ratings.length 
+    }
+    else {
+        return 'Product not found'
+    }
+}
+
+console.log(averageRating(products, 'eedfcf'))
+
+const likeProduct = (products, id, user) => {
+    const data = products.find((e) => e._id === id);
+    if(data) {
+        data.likes.push(user)
+        return data
+    }
+    else {
+        return 'Product not found'
+    }
+}
+
+console.log(likeProduct(products, 'eedfcf' , 'rahul'))
